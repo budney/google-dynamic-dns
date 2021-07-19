@@ -28,7 +28,7 @@ records = ""
 changes = zone.changes()
 
 def page_not_found(e):
-    logging.error("Invalid invocation: one of host, ip, or key not found")
+    logging.error("The resource could not be found.")
     return "<h1>404</h1><p>The resource could not be found.</p>", 404
 
 def page_unauthorized(e):
@@ -37,7 +37,7 @@ def page_unauthorized(e):
 
 def main(request):
   logging.info("Update request started.")
-  query_parameters = request.form
+  query_parameters = request.args
   
   # Assign our parameters
   host = query_parameters.get('host')
@@ -74,7 +74,6 @@ def check_key(key):
   if (cfg.app == key):
     return True
   else:
-    logging.error("Key mismatch: got " + key + ", expected " + cfg.app)
     return False
 
 def get_records(client=client, zone=zone):
