@@ -28,8 +28,8 @@ records = ""
 changes = zone.changes()
 
 def page_not_found(e):
-    logging.error("The resource could not be found.")
-    return "<h1>404</h1><p>The resource could not be found.</p>", 404
+    logging.error("Invalid call: " + e)
+    return "<h1>404</h1><p>The resource could not be found: "+e+"</p>", 404
 
 def page_unauthorized(e):
     logging.error("You are not authorized to access this resource.")
