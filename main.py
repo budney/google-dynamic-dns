@@ -37,7 +37,7 @@ def page_unauthorized(e):
 
 def main(request):
   logging.info("Update request started.")
-  logging.debug(request.__dict__)
+  logging.info(request.__dict__)
   query_parameters = request.args
   
   # Assign our parameters
