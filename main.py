@@ -74,6 +74,7 @@ def check_key(key):
   if (cfg.app == key):
     return True
   else:
+    logging.error("Key mismatch: got " + key + ", expected " + cfg.app)
     return False
 
 def get_records(client=client, zone=zone):
