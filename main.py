@@ -33,7 +33,7 @@ def page_not_found(e):
 
 def page_unauthorized(e):
     logging.error("You are not authorized to access this resource.")
-    return "<h1>401</h1><p>You are not authorized to access this resource.</p>", 401
+    return "<h1>401</h1><p>You are not authorized to access this resource: "+e+"</p>", 401
 
 def main(request):
   logging.info("Update request started.")
@@ -47,7 +47,8 @@ def main(request):
 
   # Check we have the required parameters
   if not (host and ip and key):
-    return page_not_found(404)
+    #return page_not_found(404)
+    return page_not_found('host="' + host + '", ip="' + ip + '", key="' + key + '"')
 
   # Check the key
   if not (check_key(key)):
