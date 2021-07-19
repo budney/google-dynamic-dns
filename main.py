@@ -28,8 +28,8 @@ records = ""
 changes = zone.changes()
 
 def page_not_found(e):
-    logging.error("Invalid call: " + e)
-    return "<h1>404</h1><p>The resource could not be found: "+e+"</p>", 404
+    logging.error("Invalid invocation: one of host, ip, or key not found")
+    return "<h1>404</h1><p>The resource could not be found.</p>", 404
 
 def page_unauthorized(e):
     logging.error("You are not authorized to access this resource.")
@@ -37,8 +37,7 @@ def page_unauthorized(e):
 
 def main(request):
   logging.info("Update request started.")
-  logging.info(request.form)
-  query_parameters = request.args
+  query_parameters = request.form
   
   # Assign our parameters
   host = query_parameters.get('host')
@@ -48,11 +47,7 @@ def main(request):
 
   # Check we have the required parameters
   if not (host and ip and key):
-    #return page_not_found(404)
-    host = "" if host is None else host
-    ip = "" if ip is None else ip
-    key = "" if key is None else key
-    return page_not_found('host="' + host + '", ip="' + ip + '", key="' + key + '"')
+    return page_not_found(404)
 
   # Check the key
   if not (check_key(key)):
