@@ -1,0 +1,15 @@
+# /etc/cron.d/ddns: crontab entry for dynamic DNS
+#
+# This script updates an A record for a specified host
+# whenever its IP address changes. It assumes that there's
+# only one host with a dynamic IP, and that you're using
+# Google Cloud DNS. The update-dns script is installed in
+# /etc/ddns.
+#
+# For more information see:
+# https://www.ianbrown.id.au/2020/01/dynamic-dns-with-google-cloud-dns/
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/etc/ddns
+
+*/5 * * * * root update-ddns >/dev/null 2>&1
