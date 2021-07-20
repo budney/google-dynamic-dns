@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Abort on any error
+trap 'catch $? $LINENO' ERR
+catch() {
+  echo "Error on line $2: $1" 1>&2
+  exit 1
+}
+
+MYIP=$(curl -s ipecho.net/plain);
+HOST={{ ddns.hostname }}
+URL={{ cloud_function.url }}
+KEY={{ cloud_function.key }}
+
+DNSIP=$(host -4 -t A ${HOST} | sed 's}^.*has address }}')
+
+# Make sure we actually have a live internet connection and an IP
+if [ "x$MYIP" == "x" ]; then
+    echo "Can't lookup my IP address" 1>&2
+    exit 1
+fi
+
+# Make sure we can find the IP for $HOST
+if echo "$DNSIP"|egrep -q "not found"; then
+    echo "Can't find IP address for host $HOST" 1>&2
+    exit 1
+fi
+
+# OK, update DNS if there's any change
+if [ "x$MYIP" == "x$DNSIP" ]; then
+    echo "DNS is already up to date" 1>&2
+else
+    curl "${URL}?host=${HOST}.&ip=${IP}&key=${KEY}"
+fi
+
